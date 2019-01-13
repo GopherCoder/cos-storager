@@ -83,7 +83,7 @@ func (t TenXun) GetOne(id uint) (bool, interface{}) {
 	}
 
 	var oneBucket model.Bucket
-	if dbError := database.POSTGRES.Where("bucket_id = ?", oneFileMessage.BucketID).First(&oneBucket).Error; dbError != nil {
+	if dbError := database.POSTGRES.Where("id = ?", oneFileMessage.BucketID).First(&oneBucket).Error; dbError != nil {
 		return false, nil
 	}
 
@@ -96,7 +96,7 @@ func (t TenXun) GetOne(id uint) (bool, interface{}) {
 func (t TenXun) GetAll() (bool, interface{}) {
 
 	var oneBucket model.Bucket
-	if dbError := database.POSTGRES.Where("bucket_type = ?", config.TXBUCKET).First(&oneBucket).Error; dbError != nil {
+	if dbError := database.POSTGRES.Where("bucket_type = ?", config.TXBUCKET).Or("bucket_type = ?", "tenxunyun").First(&oneBucket).Error; dbError != nil {
 		return false, nil
 	}
 

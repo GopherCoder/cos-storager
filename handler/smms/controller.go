@@ -47,8 +47,14 @@ func GetSMMSByIDHandler(context *gin.Context) {
 		return
 	}
 
+	var bucket model.Bucket
+	if dbError := database.POSTGRES.Where("bucket_type = ?", "smms").First(&bucket).Error; dbError != nil {
+		handler.MakeResponseJsonFail(context, http.StatusBadRequest, dbError.Error())
+		return
+	}
+
 	var fileMessage model.FilesMessage
-	if dbError := database.POSTGRES.Where("id = ?", params.ID).First(&fileMessage).Error; dbError != nil {
+	if dbError := database.POSTGRES.Where("id = ? AND bucket_id = ?", params.ID, bucket.ID).First(&fileMessage).Error; dbError != nil {
 		handler.MakeResponseJsonFail(context, http.StatusBadRequest, dbError.Error())
 		return
 	}
