@@ -1,0 +1,4 @@
+cos-storage
+vendor/
+env.sh
+config/settings.go
